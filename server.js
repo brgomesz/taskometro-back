@@ -21,7 +21,9 @@ app.post("/usuario", async (req, res) => {
     });
     res.status(201).json(novoUsuario);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao criar usuário", detalhes: error.message });
+    res
+      .status(500)
+      .json({ error: "Erro ao criar usuário", detalhes: error.message });
   }
 });
 
@@ -44,7 +46,9 @@ app.post("/tasks", async (req, res) => {
     });
     res.status(201).json(novaTask);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao criar task", detalhes: error.message });
+    res
+      .status(500)
+      .json({ error: "Erro ao criar task", detalhes: error.message });
   }
 });
 
@@ -54,7 +58,9 @@ app.get("/usuarios", async (req, res) => {
     const usuarios = await prisma.user.findMany();
     res.json(usuarios);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar usuários", detalhes: error.message });
+    res
+      .status(500)
+      .json({ error: "Erro ao buscar usuários", detalhes: error.message });
   }
 });
 
@@ -64,7 +70,24 @@ app.get("/tasks", async (req, res) => {
     const tasks = await prisma.task.findMany();
     res.json(tasks);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar tasks", detalhes: error.message });
+    res
+      .status(500)
+      .json({ error: "Erro ao buscar tasks", detalhes: error.message });
+  }
+});
+
+// Deletar uma task
+app.delete("/tasks/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const taskDeletada = await prisma.task.delete({
+      where: { id },
+    });
+    res.json(taskDeletada);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erro ao deletar task", detalhes: error.message });
   }
 });
 
